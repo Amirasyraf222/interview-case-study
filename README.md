@@ -46,7 +46,7 @@ P/S: If you think there is a better way for us to asses your technical skills, f
 - Clone Project `git clone https://github.com/Amirasyraf222/interview-case-study.git`
 - Run `composer install` 
 - Create database, copy `.env.example` and rename to `.env`
-- Migrate database, Run `php artisan migrate`
+- Run `php artisan migrate` to migrate database 
 - Run `php artisan migrate --seed` to seed the data in database
 - Run `php artisan passport:install` (API Authentication)
 - Run `php artisan key:generate` to generate key if required
