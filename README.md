@@ -51,7 +51,6 @@ P/S: If you think there is a better way for us to asses your technical skills, f
 - Run `php artisan passport:install` (API Authentication)
 - Run `php artisan key:generate` to generate key if required
 - Run `php artisan serve` to run the system
-- Register account required if database not seeded with the data
-- Account information (Seed)
+- Account information (seeded data)
   - email: *test@gmail.com*
   - password: *qwe123*
