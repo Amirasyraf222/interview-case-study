@@ -22,7 +22,7 @@ const submit = () => {
         <Head title="Confirm Password" />
 
         <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your password before continuing.
+            Please confirm password
         </div>
 
         <BreezeValidationErrors class="mb-4" />

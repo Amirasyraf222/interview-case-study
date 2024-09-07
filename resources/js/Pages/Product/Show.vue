@@ -62,10 +62,11 @@
                   </div>
                 </div>
 
-                <a :href="route('product.index')" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-slate-600 px-8 py-2 text-base font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">Back</a>
-
                 <button type="submit" class="mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to cart</button>
-
+                <a :href="route('product.index')" class="flex items-center font-semibold text-indigo-600 text-sm mt-10 hover:text-indigo-800 transition-colors duration-300">
+                  <i class="fas fa-arrow-left mr-2 text-indigo-600 text-lg"></i>
+                  Back to Shop
+                </a>
               </form>
             </div>
 

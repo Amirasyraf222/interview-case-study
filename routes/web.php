@@ -34,13 +34,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
-
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-
     Route::get('/order/history', [OrderController::class, 'index'])->name('order.index');
 
 });

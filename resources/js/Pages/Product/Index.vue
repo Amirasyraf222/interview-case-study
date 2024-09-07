@@ -126,7 +126,7 @@ export default {
                                 </a>
                             </h3>
                             <p class="text-gray-700 mt-2">Brand: {{ element.brand }}</p>
-                            <p class="text-gray-700 mt-1">Category: {{ element.category }}</p>
+                            <p class="text-gray-700 mt-1">Description: {{ element.description }}</p>
                             <p class="text-gray-900 mt-2 font-bold">RM{{ element.price }}</p>
                         </div>
                         <div class="p-4 border-t border-gray-200">

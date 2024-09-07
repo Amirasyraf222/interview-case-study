@@ -17,7 +17,9 @@ class OrderRepository extends GeneralRepository
 
             $data = [
                 'DataArray' => $this->toArray(
-                    Order::where('status', 'Pending Payment')->with('orderProduct', 'orderProduct.product')->get()->toArray()
+                    Order::where('status', 'Pending Payment')
+                    ->where('user_id',Auth::user()->id)
+                    ->with('orderProduct', 'orderProduct.product')->get()->toArray()
                 )
             ];
 
@@ -78,12 +80,11 @@ class OrderRepository extends GeneralRepository
             ])->toArray();
 
             // Decode product IDs from JSON
-            $productIds = json_decode($elements['product_ids'], true);
+            $cartIds = json_decode($elements['cart_ids'], true);
 
             // Process each product ID
-            foreach ($productIds as $value) {
-                $cart = Cart::where('user_id', Auth::user()->id)
-                    ->where('product_id', $value)
+            foreach ($cartIds as $value) {
+                $cart = Cart::where('id', $value)
                     ->with('product')
                     ->first();
 
@@ -91,7 +92,7 @@ class OrderRepository extends GeneralRepository
                 OrderProduct::create([
                     'order_id' => $order['id'],
                     'user_id' => Order::where('id',$order['id'])->value('user_id'),
-                    'product_id' => $value,
+                    'product_id' => $cart->product_id,
                     'quantity' => $cart->quantity,
                     'price' => $cart->product->price,
                     'total_price' => $cart->product->price * $cart->quantity,

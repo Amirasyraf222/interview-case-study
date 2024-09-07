@@ -72,6 +72,7 @@ class ProductRepository extends GeneralRepository
                 'category'      => $result['category']['name'],
                 'price'         => $result['price'],
                 'imagePath'     => $result['imagePath'],
+                'description'   => $result['description'],
                 'createdAt'     => Carbon::parse($result['created_at'])->format('d/m/Y'),
                 'updatedAt'     => Carbon::parse($result['updated_at'])->format('d/m/Y'),
             ];
