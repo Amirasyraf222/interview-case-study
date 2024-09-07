@@ -92,7 +92,7 @@ data() {
     errors: null,
     successMessage: null,
     selectAll: false,
-    selectedItems: [], // This will hold the selected product IDs
+    selectedItems: [], 
   };
 },
 computed: {
@@ -152,7 +152,7 @@ methods: {
     form.append("_method", "post");
     form.append("id", this.elements.id);
     form.append("total_amount", this.selectedTotalAmount);
-    form.append("product_ids", JSON.stringify(this.selectedItems)); // Append selected product IDs
+    form.append("product_ids", JSON.stringify(this.selectedItems)); 
 
     var url = route("api.order.checkout");
     const config = {

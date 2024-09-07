@@ -140,5 +140,4 @@ export default {
 </template>
 
 <style scoped>
-/* You can add custom styles here if needed */
 </style>
