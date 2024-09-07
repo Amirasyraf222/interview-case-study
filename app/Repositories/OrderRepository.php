@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ActivityLogUser;
 use App\Models\OrderProduct;
 use App\Models\Order;
 use App\Models\Cart;
@@ -104,6 +105,10 @@ class OrderRepository extends GeneralRepository
 
             // Check if order creation was successful
             if ($order) {
+                ActivityLogUser::log([
+                    'user_id'   => Auth::user()->id,
+                    'action'    => 'Make order'
+                ]);
                 return [
                     'status' => 200,
                     'message' => 'Order successfully created.'

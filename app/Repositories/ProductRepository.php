@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ActivityLogUser;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
@@ -145,6 +146,10 @@ class ProductRepository extends GeneralRepository
                 'user_id'       => Auth::user()->id,
                 'product_id'    => $elements['id'],
                 'quantity'      => $elements['quantity']
+            ]);
+            ActivityLogUser::log([
+                'user_id'   => Auth::user()->id,
+                'action'    => 'User add to cart'
             ]);
         }
 
