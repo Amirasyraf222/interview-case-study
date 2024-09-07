@@ -45,12 +45,12 @@ P/S: If you think there is a better way for us to asses your technical skills, f
 ### Setup Instruction
 - Clone Project `git clone https://github.com/Amirasyraf222/interview-case-study.git`
 - Run `composer install` 
-- Create database, copy `.env.example` and rename to `.env`
+- Create database, rename `.env.example` to `.env`
 - Run `php artisan migrate` to migrate database 
 - Run `php artisan db:seed` to seed the data in database
 - Run `php artisan passport:install` (API Authentication)
 - Run `php artisan key:generate` to generate key if required
 - Run `php artisan serve` to run the system
-- Account information (seeded data)
+- Login information 
   - email: *amir@yahoo.com*
   - password: *qwe123*
