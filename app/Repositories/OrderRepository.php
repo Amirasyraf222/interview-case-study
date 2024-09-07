@@ -90,7 +90,7 @@ class OrderRepository extends GeneralRepository
                 // Create order products
                 OrderProduct::create([
                     'order_id' => $order['id'],
-                    'user_id' => Auth::user()->id,
+                    'user_id' => Order::where('id',$order['id'])->value('user_id'),
                     'product_id' => $value,
                     'quantity' => $cart->quantity,
                     'price' => $cart->product->price,
