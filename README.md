@@ -43,7 +43,7 @@ You must work on this assignment using:
 P/S: If you think there is a better way for us to asses your technical skills, feel free to suggest. We are constantly looking to improve our interview process.
 
 ### Setup Instruction
-- Clone Project `git clone https://github.com/Amirasyraf222/interview-case-study.git`
+- Clone project using `git clone https://github.com/Amirasyraf222/interview-case-study.git`
 - Run `composer install` 
 - Create database, rename `.env.example` to `.env`
 - Run `php artisan migrate` to migrate database 
