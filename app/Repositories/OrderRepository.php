@@ -18,9 +18,8 @@ class OrderRepository extends GeneralRepository
 
             $data = [
                 'DataArray' => $this->toArray(
-                    Order::where('status', 'Pending Payment')
-                    ->where('user_id',Auth::user()->id)
-                    ->with('orderProduct', 'orderProduct.product')->get()->toArray()
+                    Order::where('user_id',Auth::user()->id)
+                           ->with('orderProduct', 'orderProduct.product')->get()->toArray()
                 )
             ];
 
@@ -45,6 +44,41 @@ class OrderRepository extends GeneralRepository
         }
     }
 
+    public function pending()
+    {
+
+        try {
+
+            $data = [
+                'DataArray' => $this->toArray(
+                    Order::where('user_id',Auth::user()->id)
+                           ->where('status','Pending Payment')
+                           ->with('user.info','orderProduct', 'orderProduct.product')->get()->toArray()
+                )
+            ];
+
+            if (!empty($data)) {
+                return $this->response(
+                    200,
+                    'Successfully retrieved record.',
+                    $data
+                );
+            } else {
+                return $this->response(
+                    404,
+                    'Record not available.'
+                );
+            }
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return $this->response(
+                404,
+                'Record not available.'
+            );
+        }
+    }
+
+
     public function toArray($results)
     {
         $data = [];
@@ -53,6 +87,7 @@ class OrderRepository extends GeneralRepository
             $productNames = array_map(function ($orderProduct) {
                 return $orderProduct['product']['name'] ?? 'Unknown Product';
             }, $result['order_product']);
+            $custInfo = $result['user']['info'] ?? [];
             $data[$key] = [
                 'id'                    => $result['id'],
                 'orderId'               => $result['reference_number'],
@@ -60,11 +95,15 @@ class OrderRepository extends GeneralRepository
                 'orderStatus'           => $result['status'],
                 'numberOfProduct'       => count($result['order_product']),
                 'product'               => $productNames ,
+                'custName'              => $custInfo['name'] ?? 'N/A',
+                'custPhone'             => $custInfo['phone'] ?? 'N/A',
+                'custAddress'           => isset($custInfo['address']) 
+                                            ? $custInfo['address'] . ', ' . $custInfo['city'] . ', ' . $custInfo['state'] . ' ' . $custInfo['postcode'] 
+                                            : 'N/A',
                 'createdAt'             => Carbon::parse($result['created_at'])->format('d/m/Y'),
                 'updatedAt'             => Carbon::parse($result['updated_at'])->format('d/m/Y'),
             ];
         }
-
         return $data;
     }
 
@@ -108,6 +147,42 @@ class OrderRepository extends GeneralRepository
                 ActivityLogUser::log([
                     'user_id'   => Auth::user()->id,
                     'action'    => 'Make order'
+                ]);
+                return [
+                    'status' => 200,
+                    'message' => 'Order successfully created.'
+                ];
+            } else {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Record not available.'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return response()->json([
+                'status' => 500,
+                'message' => 'An error occurred while processing the order.'
+            ], 500);
+        }
+    }
+
+    public function payment($elements)
+    {
+        try {
+            $orderIds = json_decode($elements['order_ids'], true);
+          
+            foreach ($orderIds as $orderId) {
+                $order = Order::where('reference_number', $orderId)
+                        ->first();
+                $order->update([
+                    'status' => 'Payment Confirmed'
+                ]);
+            }
+            if ($order) {
+                ActivityLogUser::log([
+                    'user_id'   => Auth::user()->id,
+                    'action'    => 'Make payment'
                 ]);
                 return [
                     'status' => 200,

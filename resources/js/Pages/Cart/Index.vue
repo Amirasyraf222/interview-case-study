@@ -2,58 +2,62 @@
   <Head title="Order" />
 
   <BreezeAuthenticatedLayout>
-    <template #header>
-      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Cart</h2>
-    </template>
-
-    <div class="container mx-auto mt-10 mb-10">
-      <div class="flex shadow-md my-10">
+    <div class="w-full mt-10 mb-10 px-0">
+      <div class="flex shadow-md my-10 w-full">
         <!-- Cart Section -->
         <div class="w-3/4 bg-white px-10 py-10">
           <div class="flex justify-between border-b pb-8">
             <h1 class="font-semibold text-2xl">Shopping Cart</h1>
           </div>
 
-          <div class="flex mt-10 mb-5 border-b pb-2">
-            <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5">
-              <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="mr-2">All
-            </h3>
-            <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Product Details</h3>
-            <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
-            <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
-            <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
+          <!-- Check if there are items in the cart -->
+          <div v-if="carts.length === 0" class="mt-10 text-center">
+            <h2 class="text-gray-600 text-xl">You have no items in your cart</h2>
           </div>
 
-          <!-- Cart Items -->
-          <div v-for="cart in carts" :key="cart.id" class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5 border-b">
-            <!-- Product Image and Details -->
-            <div class="mr-7">
-              <input type="checkbox" :value="cart.id" v-model="selectedItems" class="mr-7">
-            </div>
-            <div class="w-24 text-center">
-              <img 
-                class="h-24 cursor-pointer shadow-lg transition-transform transform hover:scale-105" 
-                :src="cart.product.imagePath" 
-                alt="" 
-                @click="openModal(cart.product.imagePath)"
-              >
-            </div>
-            <div class="flex flex-col justify-between ml-4 flex-grow text-center">
-              <span class="font-bold text-sm">{{ cart.product.name }}</span>
+          <!-- If there are items, show cart details -->
+          <div v-else>
+            <div class="flex mt-10 mb-5 border-b pb-2">
+              <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5">
+                <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="mr-2">All
+              </h3>
+              <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Product Details</h3>
+              <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Quantity</h3>
+              <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Price</h3>
+              <h3 class="font-semibold text-gray-600 text-xs uppercase w-1/5 text-center">Total</h3>
             </div>
 
-            <div class="w-1/5 text-center">
-              <span class="w-1/5 text-center font-semibold text-sm">{{ cart.quantity }}</span>
+            <!-- Cart Items -->
+            <div v-for="cart in carts" :key="cart.id" class="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5 border-b">
+              <!-- Product Image and Details -->
+              <div class="mr-7">
+                <input type="checkbox" :value="cart.id" v-model="selectedItems" class="mr-7">
+              </div>
+              <div class="w-24 text-center">
+                <img 
+                  class="h-24 cursor-pointer shadow-lg transition-transform transform hover:scale-105" 
+                  :src="cart.product.imagePath" 
+                  alt="" 
+                  @click="openModal(cart.product.imagePath)"
+                >
+              </div>
+              <div class="flex flex-col justify-between ml-4 flex-grow text-center">
+                <span class="font-bold text-sm">{{ cart.product.name }}</span>
+              </div>
+
+              <div class="w-1/5 text-center">
+                <span class="w-1/5 text-center font-semibold text-sm">{{ cart.quantity }}</span>
+              </div>
+
+              <span class="w-1/5 text-center font-semibold text-sm">RM{{ cart.product.price }}</span>
+
+              <span class="w-1/5 text-center font-semibold text-sm">RM{{ formatPrice(cart.product.price * cart.quantity) }}</span>
             </div>
-
-            <span class="w-1/5 text-center font-semibold text-sm">RM{{ cart.product.price }}</span>
-
-            <span class="w-1/5 text-center font-semibold text-sm">RM{{ formatPrice(cart.product.price * cart.quantity) }}</span>
           </div>
         </div>
 
         <!-- Summary Section -->
-        <div id="summary" class="w-1/4 px-8 py-10 bg-white shadow-md">
+        <div id="summary" class="w-1/4 px-8 py-10 bg-white shadow-md" v-if="carts.length > 0">
           <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
           <div class="flex justify-between mt-10 mb-5">
             <span class="font-semibold text-sm uppercase">Total Item = </span>
@@ -65,9 +69,9 @@
               <span>Total Price = </span>
               <span>RM{{ selectedTotalAmount }}</span>
             </div>
+            <button @click="checkoutSelected" class="bg-gray-800 text-white font-semibold py-3 w-full rounded-lg shadow-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 mb-2">Checkout Selected</button>
             <button @click="deleteSelected" class="bg-red-600 text-white font-semibold py-3 w-full rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">Delete Selected</button>
-            <button @click="checkoutSelected" class="bg-indigo-600 text-white font-semibold py-3 w-full rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mt-2">Checkout Selected</button>
-            <a :href="route('product.index')" class="flex items-center font-semibold text-indigo-600 text-sm mt-10 hover:text-indigo-800 transition-colors duration-300">
+            <a :href="route('product.index')" class="flex items-center font-semibold text-indigo-600 text-sm mt-5 hover:text-indigo-800 transition-colors duration-300">
               <i class="fas fa-arrow-left mr-2 text-indigo-600 text-lg"></i>
               Back to Shop
             </a>
@@ -190,7 +194,7 @@ export default {
       window.axios.post(url, form, config).then((res) => {
         if (res.status == 200 || res.status != 200) {
           this.successMessage = res.data.data.message;
-          window.location.href = this.baseUrl + "/order/history";
+          window.location.href = this.baseUrl + "/order/payment";
         }
       });
     },

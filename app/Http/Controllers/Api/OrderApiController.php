@@ -22,9 +22,23 @@ class OrderApiController extends ApiController
         return $this->formatResponse($results);
     }
 
+    public function pending()
+    {
+        $results = $this->order->pending();
+
+        return $this->formatResponse($results);
+    }
+
     public function store(Request $request)
     {
         $results = $this->order->store($request->all());
+
+        return $this->formatResponse($results);
+    }
+
+    public function payment(Request $request)
+    {
+        $results = $this->order->payment($request->all());
 
         return $this->formatResponse($results);
     }

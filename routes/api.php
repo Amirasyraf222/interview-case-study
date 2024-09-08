@@ -32,6 +32,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::get('/cart', [CartApiController::class, 'index'])->name('api.cart.index');
     Route::get('/cart/{id}/delete', [CartApiController::class, 'destroy'])->name('api.cart.destroy');
     Route::post('/order/checkout', [OrderApiController::class, 'store'])->name('api.order.checkout');
+    Route::post('/order/payment', [OrderApiController::class, 'payment'])->name('api.order.payment');
     Route::get('/order', [OrderApiController::class, 'index'])->name('api.order.history');
+    Route::get('/order/pending-payment', [OrderApiController::class, 'pending'])->name('api.order.pending');
+
 
 });

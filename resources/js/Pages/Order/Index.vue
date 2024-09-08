@@ -20,6 +20,8 @@
       },
       mounted() {
         this.element();
+        this.cart();
+
       },
       methods: {
         element() {
@@ -31,6 +33,19 @@
             this.elements = details.DataArray;
           });
         },
+        payNow(orderId) {
+          var url = route('order.payment');
+          window.location.href = url;
+        },
+        cart() {
+            var url = route('api.cart.index');
+
+            window.axios.get(url).then((response) => {
+                let details = response.data.data.data;
+                this.carts = details.DataArray;
+                this.cartCount = details.count;
+            });
+        },
       }
     }
 </script>
@@ -39,23 +54,6 @@
     <Head title="Order" />
 
     <BreezeAuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Order History
-
-                <a :href="route('cart.index')" class="float-right inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                  <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2.5l.5 2h12l.5-2H21M3 3h0L4 12H20L21 3H4.5M6 20a2 2 0 1 0 4 0 2 2 0 1 0-4 0zm10 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0z"></path>
-                </svg>
-
-                <span class="inline-flex items-center justify-center w-4 h-4 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
-                  {{ cartCount }}
-                </span>
-                </a>
-
-            </h2>
-        </template>
-
     <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="flex flex-col">
@@ -78,7 +76,10 @@
                         Order Status
                       </th>
                       <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Item
+                        Item(s)
+                      </th>
+                      <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Action
                       </th>
                       
                     </tr>
@@ -100,14 +101,37 @@
                         <div class="text-sm text-gray-500">RM{{ element.totalAmount }}</div>
                       </td>
 
+                      <td 
+                      class="px-6 py-4 whitespace-nowrap text-sm"
+                      :class="{
+                        'text-green-500': element.orderStatus === 'Payment Confirmed',
+                        'text-orange-500': element.orderStatus === 'Pending Payment',
+                        'text-red-500': element.orderStatus !== 'Payment Confirmed' && element.orderStatus !== 'Pending Payment'
+                      }"
+                    >
+                      {{ element.orderStatus }}
+                    </td>
+
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {{ element.orderStatus }}
+                          <ul>
+                              <li v-for="(product, idx) in element.product" :key="idx">- {{ product }}</li>
+                          </ul>
                       </td>
+                                        
                       <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                <ul>
-                                                    <li v-for="(product, idx) in element.product" :key="idx">- {{ product }}</li>
-                                                </ul>
-                                            </td>
+                      <ul>
+                        <li v-if="element.orderStatus === 'Pending Payment'">
+                          <button 
+                            @click="payNow(element.orderId)" 
+                            class="bg-red-500 text-white py-1 px-4 rounded hover:bg-red-600 focus:outline-none">
+                            Pay Now
+                          </button>
+                        </li>
+                        <li v-else>
+                          <div class="text-sm text-green-500">Paid</div>
+                        </li>
+                      </ul>
+                    </td>
 
                     </tr>
                     

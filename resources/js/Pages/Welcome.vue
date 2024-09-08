@@ -19,7 +19,7 @@ import { Head } from '@inertiajs/inertia-vue3';
 
             <!-- Authentication Links -->
             <div class="flex justify-center mt-8 space-x-4">
-                <a href="/login" class="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 hover:shadow-xl transition-shadow duration-300">Login</a>
+                <a href="/login" class="px-6 py-3 bg-gray-800 text-white rounded-lg shadow-lg hover:bg-gray-500 hover:shadow-xl transition-shadow duration-300">Login</a>
                 <a href="/register" class="px-6 py-3 bg-green-500 text-white rounded-lg shadow-lg hover:bg-green-600 hover:shadow-xl transition-shadow duration-300">Register</a>
             </div>
         </div>

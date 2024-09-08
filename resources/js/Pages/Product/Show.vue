@@ -2,20 +2,6 @@
   <Head title="Product Information" />
 
   <BreezeAuthenticatedLayout>
-    <template #header>
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Product Information
-
-            <a :href="route('cart.index')" class="float-right inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cart
-              <span class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
-                {{ cartCount }}
-              </span>
-            </a>
-
-        </h2>
-
-    </template>
-
     <div class="py-12">
       <div class="bg-white">
         <div class="pt-6">
@@ -62,7 +48,7 @@
                   </div>
                 </div>
 
-                <button type="submit" class="mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to cart</button>
+                <button type="submit" class="mt-2 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-800 px-8 py-3 text-base font-medium text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Add to cart</button>
                 <a :href="route('product.index')" class="flex items-center font-semibold text-indigo-600 text-sm mt-10 hover:text-indigo-800 transition-colors duration-300">
                   <i class="fas fa-arrow-left mr-2 text-indigo-600 text-lg"></i>
                   Back to Shop
@@ -91,11 +77,10 @@
 
 <script>
   import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-  import BreezeInput from '@/Components/Input.vue';
   import { Head } from '@inertiajs/inertia-vue3';
 
   export default {
-      components: { BreezeAuthenticatedLayout, Head, BreezeInput },
+      components: { BreezeAuthenticatedLayout, Head },
       props: {
         id: {
           type: String,
@@ -110,7 +95,6 @@
           cartCount: 0,
           baseUrl: window.location.origin,
           quantity: 1,
-          form: new FormData(),
           errors: null,
           successMessage: null,
         };
@@ -121,18 +105,18 @@
         },
       },
       mounted() {
-        this.element();
-        this.cart();
+        this.fetchProduct();
+        this.fetchCart();
       },
       methods: {
-        element() {
+        fetchProduct() {
           var url = route('api.product.show', this.id);
           window.axios.get(url).then((response) => {
             let details = response.data.data.data;
             this.elements = details.DataArray;
           });
         },
-        cart() {
+        fetchCart() {
           var url = route('api.cart.index');
           window.axios.get(url).then((response) => {
             let details = response.data.data.data;
@@ -164,7 +148,7 @@
           window.axios
             .post(url, form, config)
             .then((res) => {
-              if (res.status == 200) {
+              if (res.status === 200) {
                 this.successMessage = res.data.data.message;
                 location.reload();
               }
@@ -173,3 +157,16 @@
       },
   }
 </script>
+
+<style scoped>
+  /* Enhanced styling for a modern look */
+  .bg-gray-800 {
+    background-color: #2d3748; /* Dark gray background */
+  }
+  .hover\:bg-gray-900:hover {
+    background-color: #1a202c; /* Darker gray on hover */
+  }
+  .focus\:ring-gray-500:focus {
+    box-shadow: 0 0 0 2px rgba(209, 213, 219, 0.5); /* Gray focus ring */
+  }
+</style>
