@@ -17,6 +17,7 @@ class CreateCustomerInfosTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('postcode')->nullable();
             $table->string('state')->nullable();

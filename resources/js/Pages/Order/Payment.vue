@@ -84,6 +84,14 @@
           <div class="bg-white shadow-md rounded-lg p-6">
             
             <!-- Select All Checkbox -->
+            <div v-for="(element, index) in elements" :key="index" class="mb-4">
+            <p class="text-gray-600"><strong>Customer Name:</strong> {{ element.custName }}</p>
+                  <p class="text-gray-600"><strong>Customer Phone:</strong> {{ element.custPhone }}</p>
+                  <p class="text-gray-600"><strong>Customer Address:</strong> {{ element.custAddress }}</p>
+            </div>
+
+            <hr v-if="index !== elements.length - 1" class="my-4">
+
             <div class="mb-4">
               <input 
                 type="checkbox" 
@@ -92,13 +100,8 @@
                 class="mr-2">
               <label for="selectAll" class="text-lg font-semibold text-gray-700">Select All</label>
             </div>
-            <hr v-if="index !== elements.length - 1" class="my-4">
 
-            <div v-for="(element, index) in elements" :key="index" class="mb-4">
-            <p class="text-gray-600"><strong>Customer Name:</strong> {{ element.custName }}</p>
-                  <p class="text-gray-600"><strong>Customer Phone:</strong> {{ element.custPhone }}</p>
-                  <p class="text-gray-600"><strong>Customer Address:</strong> {{ element.custAddress }}</p>
-            </div>
+    
             <hr v-if="index !== elements.length - 1" class="my-4">
 
 

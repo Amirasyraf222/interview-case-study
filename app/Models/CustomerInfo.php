@@ -11,6 +11,12 @@ class CustomerInfo extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'name',
+        'email',
+        'user_id',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

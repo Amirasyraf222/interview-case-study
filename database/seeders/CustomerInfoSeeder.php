@@ -14,6 +14,7 @@ class CustomerInfoSeeder extends Seeder
             'name'                          => 'Amir',
             'phone'                         => '0127335606',
             'address'                       => 'Bsp Skypark',
+            'email'                         => 'amir@yahoo.com',
             'postcode'                      => 40150,
             'city'                          => 'Jenjarom',
             'state'                         => 'Selangor',

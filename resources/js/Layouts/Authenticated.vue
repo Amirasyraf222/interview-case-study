@@ -80,6 +80,9 @@ onMounted(() => {
                                     </template>
 
                                     <template #content>
+                                           <BreezeDropdownLink :href="route('user.profile')" method="get" as="button">
+                                            Profile
+                                        </BreezeDropdownLink>
                                         <BreezeDropdownLink :href="route('logout')" method="post" as="button">
                                             Log Out
                                         </BreezeDropdownLink>

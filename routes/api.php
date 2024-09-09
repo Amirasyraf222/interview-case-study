@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductApiController;
 use App\Http\Controllers\Api\CartApiController;
 use App\Http\Controllers\Api\OrderApiController;
+use App\Http\Controllers\Api\ProfileApiController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +37,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::post('/order/payment', [OrderApiController::class, 'payment'])->name('api.order.payment');
     Route::get('/order', [OrderApiController::class, 'index'])->name('api.order.history');
     Route::get('/order/pending-payment', [OrderApiController::class, 'pending'])->name('api.order.pending');
+    Route::get('/my-profile', [ProfileApiController::class, 'index'])->name('api.user.profile.index');
+    Route::post('/profile/update', [ProfileApiController::class, 'store'])->name('api.user.profile.update');
+
 
 
 });
